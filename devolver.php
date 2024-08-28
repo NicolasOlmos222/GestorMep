@@ -1,0 +1,150 @@
+<?php
+// Conectar a la base de datos
+$conn = new mysqli('localhost', 'root', '', 'c2660463_1');
+
+if (isset($_POST['devolver'])) {
+    $id_computadora = $_POST['devolver'];
+
+    // Obtener la reserva activa
+    $reserva = $conn->query("SELECT id_reserva FROM reservas WHERE id_computadora='$id_computadora' AND estado_reserva='activa'")->fetch_assoc();
+
+    // Finalizar la reserva
+    $sql = "UPDATE reservas SET estado_reserva='finalizada' WHERE id_reserva='{$reserva['id_reserva']}'";
+    $conn->query($sql);
+
+    // Actualizar el estado de la computadora
+    $sql = "UPDATE computadoras SET estado='disponible' WHERE id_computadora='$id_computadora'";
+    $conn->query($sql);
+
+    // Registrar movimiento
+    $sql = "INSERT INTO movimientos (id_computadora, id_reserva, fecha_movimiento, tipo_movimiento) 
+            VALUES ('$id_computadora', '{$reserva['id_reserva']}', NOW(), 'devolucion')";
+    $conn->query($sql);
+
+    echo "<p>Computadora devuelta con éxito.</p>";
+}
+
+// Obtener computadoras en uso
+$computadoras = $conn->query("SELECT c.id_computadora, c.rack, c.numero, r.curso, d.nombre_docente 
+                              FROM computadoras c
+                              JOIN reservas r ON c.id_computadora = r.id_computadora
+                              JOIN docentes d ON r.id_docente = d.id_docente
+                              WHERE c.estado = 'en uso'
+                              ORDER BY r.curso");
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devolución de Computadoras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        table tr:hover {
+            background-color: #ddd;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+        .navigation-buttons a {
+            text-decoration: none;
+        }
+        .navigation-buttons button {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .navigation-buttons button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation-buttons">
+            <a href="reservar.php"><button>Ir a Reservas</button></a>
+            <a href="historial.php"><button>Ir a Historial</button></a>
+        </div>
+        <h2>Devolución de Computadoras</h2>
+
+        <form method="post">
+            <table>
+                <tr>
+                    <th>Rack</th>
+                    <th>Número</th>
+                    <th>Curso</th>
+                    <th>Docente</th>
+                    <th>Acción</th>
+                </tr>
+                <?php while ($row = $computadoras->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= $row['rack'] ?></td>
+                        <td><?= $row['numero'] ?></td>
+                        <td><?= $row['curso'] ?></td>
+                        <td><?= $row['nombre_docente'] ?></td>
+                        <td>
+                            <button type="submit" name="devolver" value="<?= $row['id_computadora'] ?>">Devolver</button>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </table>
+        </form>
+
+    
+    </div>
+</body>
+</html>
