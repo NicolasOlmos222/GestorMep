@@ -8,13 +8,15 @@ if (isset($_POST['devolver'])) {
     // Obtener la reserva activa
     $reserva = $conn->query("SELECT id_reserva FROM reservas WHERE id_computadora='$id_computadora' AND estado_reserva='activa'")->fetch_assoc();
 
-    // Finalizar la reserva
-    $sql = "UPDATE reservas SET estado_reserva='finalizada' WHERE id_reserva='{$reserva['id_reserva']}'";
-    $conn->query($sql);
-
     // Actualizar el estado de la computadora
     $sql = "UPDATE computadoras SET estado='disponible' WHERE id_computadora='$id_computadora'";
     $conn->query($sql);
+    
+    // Finalizar la reserva
+    $sql = "DELETE FROM reservas WHERE id_reserva='{$reserva['id_reserva']}'";
+    $conn->query($sql);
+
+    
 
     // Registrar movimiento
     $sql = "INSERT INTO movimientos (id_computadora, id_reserva, fecha_movimiento, tipo_movimiento) 
