@@ -1,8 +1,7 @@
 <?php
 // Conectar a la base de datos
-$conn = new mysqli('localhost', 'root', '', 'c2660463_1');
+$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
 
-// Obtener historial de movimientos
 $movimientos = $conn->query("SELECT m.fecha_movimiento, m.tipo_movimiento, c.rack, c.numero, r.curso, d.nombre_docente 
                              FROM movimientos m
                              JOIN computadoras c ON m.id_computadora = c.id_computadora
@@ -109,5 +108,6 @@ $movimientos = $conn->query("SELECT m.fecha_movimiento, m.tipo_movimiento, c.rac
 
         
     </div>
+    <p>v1.0</p>
 </body>
 </html>

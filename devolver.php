@@ -1,6 +1,6 @@
 <?php
 // Conectar a la base de datos
-$conn = new mysqli('localhost', 'root', '', 'c2660463_1');
+$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
 
 if (isset($_POST['devolver'])) {
     $id_computadora = $_POST['devolver'];
@@ -12,11 +12,9 @@ if (isset($_POST['devolver'])) {
     $sql = "UPDATE computadoras SET estado='disponible' WHERE id_computadora='$id_computadora'";
     $conn->query($sql);
     
-    // Finalizar la reserva
-    $sql = "DELETE FROM reservas WHERE id_reserva='{$reserva['id_reserva']}'";
+    // Finalizar la reserva en lugar de eliminarla
+    $sql = "UPDATE reservas SET estado_reserva='finalizada' WHERE id_reserva='{$reserva['id_reserva']}'";
     $conn->query($sql);
-
-    
 
     // Registrar movimiento
     $sql = "INSERT INTO movimientos (id_computadora, id_reserva, fecha_movimiento, tipo_movimiento) 
@@ -26,12 +24,11 @@ if (isset($_POST['devolver'])) {
     echo "<p>Computadora devuelta con éxito.</p>";
 }
 
-// Obtener computadoras en uso
 $computadoras = $conn->query("SELECT c.id_computadora, c.rack, c.numero, r.curso, d.nombre_docente 
                               FROM computadoras c
                               JOIN reservas r ON c.id_computadora = r.id_computadora
                               JOIN docentes d ON r.id_docente = d.id_docente
-                              WHERE c.estado = 'en uso'
+                              WHERE c.estado = 'en uso' AND r.estado_reserva = 'activa'
                               ORDER BY r.curso");
 ?>
 
@@ -146,7 +143,8 @@ $computadoras = $conn->query("SELECT c.id_computadora, c.rack, c.numero, r.curso
             </table>
         </form>
 
-    
+        
     </div>
+    <p>v1.0</p>
 </body>
 </html>

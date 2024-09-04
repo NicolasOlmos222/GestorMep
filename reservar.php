@@ -2,7 +2,7 @@
 session_start(); // Inicia la sesión
 
 // Conectar a la base de datos
-$conn = new mysqli('localhost', 'root', '', 'c2660463_1');
+$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_docente = $_POST['id_docente'];
@@ -164,5 +164,6 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
             </div>
         </form>
     </div>
+    <p>v1.0</p>
 </body>
 </html>
