@@ -1,6 +1,7 @@
 <?php
 // Conectar a la base de datos
-$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
+$conn = new mysqli('localhost', 'c2660463_1', 'root', '');
+//$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
 
 if (isset($_POST['devolver'])) {
     $id_computadora = $_POST['devolver'];

@@ -1,6 +1,7 @@
 <?php
 // Conectar a la base de datos
-$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
+$conn = new mysqli('localhost', 'c2660463_1', 'root', '');
+//$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
 
 $movimientos = $conn->query("SELECT m.fecha_movimiento, m.tipo_movimiento, c.rack, c.numero, r.curso, d.nombre_docente 
                              FROM movimientos m
