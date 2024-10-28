@@ -3,12 +3,35 @@
 $conn = new mysqli('localhost', 'root', '', 'c2660463_1');
 //$conn = new mysqli('localhost', 'c2660463_1', '44guwedeWI', 'c2660463_1');
 
-$movimientos = $conn->query("SELECT m.fecha_movimiento, m.tipo_movimiento, c.rack, c.numero, r.curso, d.nombre_docente 
-                             FROM movimientos m
-                             JOIN computadoras c ON m.id_computadora = c.id_computadora
-                             JOIN reservas r ON m.id_reserva = r.id_reserva
-                             JOIN docentes d ON r.id_docente = d.id_docente
-                             ORDER BY m.fecha_movimiento DESC");
+// Definir variables para los filtros
+$fecha = isset($_GET['fecha']) ? $_GET['fecha'] : '';
+$nombre_docente = isset($_GET['nombre_docente']) ? $_GET['nombre_docente'] : '';
+$curso = isset($_GET['curso']) ? $_GET['curso'] : '';
+
+// Construir la consulta SQL con filtros
+$sql = "SELECT m.fecha_movimiento, m.tipo_movimiento, c.rack, c.numero, r.curso, d.nombre_docente 
+        FROM movimientos m
+        JOIN computadoras c ON m.id_computadora = c.id_computadora
+        JOIN reservas r ON m.id_reserva = r.id_reserva
+        JOIN docentes d ON r.id_docente = d.id_docente
+        WHERE 1=1";
+
+// Agregar condiciones según los filtros
+if (!empty($fecha)) {
+    $sql .= " AND DATE(m.fecha_movimiento) = '$fecha'";
+}
+
+if (!empty($nombre_docente)) {
+    $sql .= " AND d.nombre_docente LIKE '%$nombre_docente%'";
+}
+if (!empty($curso)) {
+    $sql .= " AND r.curso LIKE '%$curso%'";
+}
+
+$sql .= " ORDER BY m.fecha_movimiento DESC";
+
+// Ejecutar la consulta
+$movimientos = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -86,6 +109,20 @@ $movimientos = $conn->query("SELECT m.fecha_movimiento, m.tipo_movimiento, c.rac
         </div>
         <h2>Historial de Movimientos</h2>
 
+        <!-- Formulario de Filtros -->
+        <form method="GET">
+            <label for="fecha">Fecha:</label>
+            <input type="date" name="fecha" id="fecha" value="<?= htmlspecialchars($fecha) ?>">
+
+            <label for="nombre_docente">Docente:</label>
+            <input type="text" name="nombre_docente" id="nombre_docente" value="<?= htmlspecialchars($nombre_docente) ?>">
+
+            <label for="curso">Curso:</label>
+            <input type="text" name="curso" id="curso" value="<?= htmlspecialchars($curso) ?>">
+
+            <button type="submit">Filtrar</button>
+        </form>
+        <br>
         <table>
             <tr>
                 <th>Fecha</th>
@@ -106,8 +143,6 @@ $movimientos = $conn->query("SELECT m.fecha_movimiento, m.tipo_movimiento, c.rac
                 </tr>
             <?php endwhile; ?>
         </table>
-
-        
     </div>
     <p>v1.0</p>
 </body>
