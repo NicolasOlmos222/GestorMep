@@ -107,6 +107,7 @@ $movimientos = $conn->query($sql);
             <a href="escaner.php"><button>Ir a escaner</button></a>
             <a href="reservar.php"><button>Ir a carga manual</button></a>
             <a href="devolver.php"><button>Ir a devoluciones</button></a>
+            <a href="escanerDevolucion.php"><button>Ir a devolucion con escaner</button></a>
             <a href="historial.php"><button>Ir a historial</button></a>
         </div>
         <h2>Historial de Movimientos</h2>
