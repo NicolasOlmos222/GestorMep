@@ -104,8 +104,10 @@ $movimientos = $conn->query($sql);
 <body>
     <div class="container">
         <div class="navigation-buttons">
-            <a href="reservar.php"><button>Ir a Reservas</button></a>
-            <a href="devolver.php"><button>Ir a Devoluciones</button></a>
+            <a href="escaner.php"><button>Ir a escaner</button></a>
+            <a href="reservar.php"><button>Ir a carga manual</button></a>
+            <a href="devolver.php"><button>Ir a devoluciones</button></a>
+            <a href="historial.php"><button>Ir a historial</button></a>
         </div>
         <h2>Historial de Movimientos</h2>
 
