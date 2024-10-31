@@ -155,7 +155,7 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
     <div class="container">
         <div class="navigation-buttons">
             <a href="reservar.php"><button>Ir a carga manual</button></a>
-            <a href="devolver.php"><button>Ir a devoluciones</button></a>
+            <a href="devolver.php"><button>Ir a devolucion manual</button></a>
             <a href="escanerDevolucion.php"><button>Ir a devolucion con escaner</button></a>
             <a href="historial.php"><button>Ir a historial</button></a>
         </div>

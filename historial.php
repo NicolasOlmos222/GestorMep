@@ -106,7 +106,7 @@ $movimientos = $conn->query($sql);
         <div class="navigation-buttons">
             <a href="escaner.php"><button>Ir a escaner</button></a>
             <a href="reservar.php"><button>Ir a carga manual</button></a>
-            <a href="devolver.php"><button>Ir a devoluciones</button></a>
+            <a href="devolver.php"><button>Ir a devolucion manual</button></a>
             <a href="escanerDevolucion.php"><button>Ir a devolucion con escaner</button></a>
             <a href="historial.php"><button>Ir a historial</button></a>
         </div>
@@ -147,6 +147,6 @@ $movimientos = $conn->query($sql);
             <?php endwhile; ?>
         </table>
     </div>
-    <p>v1.0</p>
+    <p>v1.1</p>
 </body>
 </html>

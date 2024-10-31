@@ -178,6 +178,7 @@ $computadoras_reservadas = $conn->query("SELECT c.rack, c.numero, r.curso, d.nom
             </tbody>
         </table>
     </div>
+    <p>v1.1</p>
 </body>
 </html>
 
