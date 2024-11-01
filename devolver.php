@@ -25,7 +25,7 @@ if (isset($_POST['devolver'])) {
     echo "<p>Computadora devuelta con éxito.</p>";
 }
 
-$computadoras = $conn->query("SELECT c.id_computadora, c.rack, c.numero, r.curso, d.nombre_docente 
+$computadoras = $conn->query("SELECT DISTINCT c.id_computadora, c.rack, c.numero, r.curso, d.nombre_docente 
                               FROM computadoras c
                               JOIN reservas r ON c.id_computadora = r.id_computadora
                               JOIN docentes d ON r.id_docente = d.id_docente

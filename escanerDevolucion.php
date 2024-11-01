@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Obtener lista de computadoras reservadas y en uso
-$computadoras_reservadas = $conn->query("SELECT c.rack, c.numero, r.curso, d.nombre_docente 
+$computadoras_reservadas = $conn->query("SELECT DISTINCT c.rack, c.numero, r.curso, d.nombre_docente 
                                          FROM computadoras c
                                          JOIN reservas r ON c.id_computadora = r.id_computadora
                                          JOIN docentes d ON r.id_docente = d.id_docente
