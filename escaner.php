@@ -143,6 +143,9 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
         .navigation-buttons button:hover {
             background-color: #5a6268;
         }
+        input{
+            height: 30px;
+        }
     </style>
 
     <script>
@@ -192,7 +195,6 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
             <label for="codigo_escaneado">Escanea el código de la computadora:</label>
             <input type="text" name="codigo_escaneado" id="codigo_escaneado" required placeholder="Ej. LenovoV330'31">
             
-            <button type="submit">Reservar Computadora</button>
         </form>
     </div>
     <p>v1.1</p>
