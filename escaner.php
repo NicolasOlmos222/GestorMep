@@ -176,7 +176,7 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
 
             <label for="curso">Curso:</label>
             <select name="curso" id="curso">
-            <option value="1A" <?= $curso_seleccionado == '1A' ? 'selected' : '' ?>>1A</option>
+                <option value="1A" <?= $curso_seleccionado == '1A' ? 'selected' : '' ?>>1A</option>
                 <option value="1B" <?= $curso_seleccionado == '1B' ? 'selected' : '' ?>>1B</option>
                 <option value="2A" <?= $curso_seleccionado == '2A' ? 'selected' : '' ?>>2A</option>
                 <option value="2B" <?= $curso_seleccionado == '2B' ? 'selected' : '' ?>>2B</option>

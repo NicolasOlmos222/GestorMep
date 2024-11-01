@@ -134,6 +134,9 @@ $computadoras_reservadas = $conn->query("SELECT c.rack, c.numero, r.curso, d.nom
         .navigation-buttons button:hover {
             background-color: #5a6268;
         }
+        input{
+            height: 30px;
+        }
     </style>
     <script>
         window.onload = function() {
@@ -153,7 +156,6 @@ $computadoras_reservadas = $conn->query("SELECT c.rack, c.numero, r.curso, d.nom
         <form method="post">
             <label for="codigo_escaneado">Escanea el código de la computadora:</label>
             <input type="text" name="codigo_escaneado" id="codigo_escaneado" required placeholder="Ej. LenovoV330'31">
-            <button type="submit">Devolver Computadora</button>
         </form>
 
         <h2>Computadoras Reservadas</h2>
