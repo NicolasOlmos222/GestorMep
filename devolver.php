@@ -25,6 +25,28 @@ if (isset($_POST['devolver'])) {
     echo "<p>Computadora devuelta con éxito.</p>";
 }
 
+if (isset($_POST['devolver_todas'])) {
+    // Obtener todas las reservas activas
+    $reservas = $conn->query("SELECT id_reserva, id_computadora FROM reservas WHERE estado_reserva='activa'");
+    
+    // Procesar cada computadora reservada
+    while ($reserva = $reservas->fetch_assoc()) {
+        $id_computadora = $reserva['id_computadora'];
+
+        // Actualizar el estado de la computadora
+        $conn->query("UPDATE computadoras SET estado='disponible' WHERE id_computadora='$id_computadora'");
+
+        // Finalizar la reserva
+        $conn->query("UPDATE reservas SET estado_reserva='finalizada' WHERE id_reserva='{$reserva['id_reserva']}'");
+
+        // Registrar movimiento
+        $conn->query("INSERT INTO movimientos (id_computadora, id_reserva, fecha_movimiento, tipo_movimiento) 
+                      VALUES ('$id_computadora', '{$reserva['id_reserva']}', NOW(), 'devolucion')");
+    }
+
+    echo "<p>Todas las computadoras han sido devueltas con éxito.</p>";
+}
+
 $computadoras = $conn->query("SELECT DISTINCT c.id_computadora, c.rack, c.numero, r.curso, d.nombre_docente 
                               FROM computadoras c
                               JOIN reservas r ON c.id_computadora = r.id_computadora
@@ -111,7 +133,15 @@ $computadoras = $conn->query("SELECT DISTINCT c.id_computadora, c.rack, c.numero
         .navigation-buttons button:hover {
             background-color: #5a6268;
         }
+        input{
+            height: 30px;
+        }
     </style>
+    <script>
+        function confirmarDevolucionTodas() {
+            return confirm("¿Está seguro de que desea devolver todas las computadoras?");
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -144,11 +174,9 @@ $computadoras = $conn->query("SELECT DISTINCT c.id_computadora, c.rack, c.numero
                     </tr>
                 <?php endwhile; ?>
             </table>
+            <button type="submit" name="devolver_todas" onclick="return confirmarDevolucionTodas();">Devolver Todas</button>
         </form>
-
-        
     </div>
     <p>v1.1</p>
 </body>
 </html>
-

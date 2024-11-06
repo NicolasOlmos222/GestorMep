@@ -4,6 +4,12 @@ session_start(); // Inicia la sesión
 // Conectar a la base de datos
 $conn = new mysqli('localhost', 'root', '', 'c2660463_1');
 
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+$mensaje_sonido = '';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_docente = $_POST['id_docente'];
     $curso = $_POST['curso'];
@@ -18,12 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $marca = $matches[1];
         $numero = $matches[2];
 
-        //echo "<script>alert('marca: ' + '$marca' + ', numero: ' + '$numero');</script>";
+        // Normalizar la marca
         if ($marca == 'LenovoV330') {
             $marca = 'LENOVO';
-        }else if ($marca == 'CONIC') {
-            $marca = 'CONIG';
-        }else if ($marca == 'Pix') {
+        } else if ($marca == 'CONIC' || $marca == 'Pix') {
             $marca = 'CONIG';
         }
 
@@ -49,11 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     VALUES ('$id_computadora', LAST_INSERT_ID(), NOW(), 'reserva')";
             $conn->query($sql);
 
+            // Mensaje y sonido de éxito
+            $mensaje_sonido = "<script>document.getElementById('success-sound').play();</script>";
             echo "Reserva computadora: $marca $numero con éxito.";
         } else {
+            // Mensaje y sonido de error
+            $mensaje_sonido = "<script>document.getElementById('error-sound').play();</script>";
             echo "Computadora no disponible o código incorrecto.";
         }
     } else {
+        // Mensaje y sonido de error
+        $mensaje_sonido = "<script>document.getElementById('error-sound').play();</script>";
         echo "Código de escaneo no válido.";
     }
 }
@@ -100,7 +110,7 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
             font-weight: bold;
             color: #555;
         }
-        select {
+        select, input[type="text"] {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ddd;
@@ -121,30 +131,11 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
         button:hover {
             background-color: #0056b3;
         }
-        .computadoras-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        .computadora-button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .computadora-button:hover {
-            background-color: #218838;
-        }
         .navigation-buttons button:hover {
             background-color: #5a6268;
         }
-        input{
-            height: 30px;
+        .navigation-buttons a {
+            text-decoration: none;
         }
     </style>
 
@@ -193,10 +184,17 @@ $curso_seleccionado = isset($_SESSION['curso_seleccionado']) ? $_SESSION['curso_
             </select>
 
             <label for="codigo_escaneado">Escanea el código de la computadora:</label>
-            <input type="text" name="codigo_escaneado" id="codigo_escaneado" required placeholder="Ej. LenovoV330'31">
-            
+            <input type="text" name="codigo_escaneado" id="codigo_escaneado" required placeholder="Escanear código aquí">
         </form>
+
+        <!-- Archivos de audio -->
+        <audio id="success-sound" src="success.mp3"></audio>
+        <audio id="error-sound" src="error.mp3"></audio>
     </div>
-    <p>v1.1</p>
+
+    <?php
+    // Reproducción de sonido según el resultado
+    echo $mensaje_sonido;
+    ?>
 </body>
 </html>
