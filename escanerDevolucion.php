@@ -6,7 +6,7 @@ $conn = new mysqli('localhost', 'root', '', 'c2660463_1');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $codigo_escaneado = $_POST['codigo_escaneado'];
 
-    if (preg_match("/^(LenovoV330|CONIC|Pix)'(\d+)$/", $codigo_escaneado, $matches)) {
+    if (preg_match("/^(Lenovo|LenovoV330|CONIC|Pix)'(\d+)$/", $codigo_escaneado, $matches)) {
         $marca = $matches[1];
         $numero = $matches[2];
 
@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $marca = 'LENOVO';
         } else if ($marca == 'CONIC' || $marca == 'Pix') {
             $marca = 'CONIG';
+        } else if ($marca == 'Lenovo'){
+            $marca = 'LENOVO';
         }
 
         // Obtener la computadora en uso basada en el código escaneado

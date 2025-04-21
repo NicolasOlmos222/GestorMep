@@ -20,15 +20,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['curso_seleccionado'] = $curso;
 
     // Procesar el código escaneado
-    if (preg_match("/^(LenovoV330|CONIC|Pix)'(\d+)$/", $codigo_escaneado, $matches)) {
+    if (preg_match("/^(Lenovo|LenovoV330|CONIC|Pix)'(\d+)$/", $codigo_escaneado, $matches)) {
         $marca = $matches[1];
         $numero = $matches[2];
 
-        // Normalizar la marca
+        // Normalizar la marca lENOVO'1
+
         if ($marca == 'LenovoV330') {
             $marca = 'LENOVO';
         } else if ($marca == 'CONIC' || $marca == 'Pix') {
             $marca = 'CONIG';
+        }
+        else if ($marca == 'Lenovo'){
+            $marca = 'LENOVO';
         }
 
         // Determinar el ID de la computadora basada en la marca y el número
